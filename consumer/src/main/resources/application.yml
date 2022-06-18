@@ -1,0 +1,9 @@
+spring:
+  rabbitmq:
+    port: 5672
+    host: localhost
+    username: admin
+    password: 1234
+    queue-name: FilaValidador
+    message-name: NOVO_ARQUIVO_POSTADO
+    exchange-name: validador_exchange
