@@ -21,8 +21,8 @@ public class ProducerController {
     @PostMapping(path = "/notificar")
     public void sendMessage(@RequestParam String rotulo, @RequestBody MensagemDTO mensagemDTO) {
         final Map<String, Serializable> payloadTeste = new HashMap<>();
-        payloadTeste.put("FOO", "BAR");
-        final ApplicationMessage message = new ApplicationMessage("", rotulo, "producer-name", new HashMap<>());
+        payloadTeste.put("MENSAGEM", mensagemDTO.getMensagem());
+        final ApplicationMessage message = new ApplicationMessage("NOVO_ARQUIVO_POSTADO", "producer-name", "196SLGP8KSQBOMDIA", payloadTeste);
         communicationService.sendMessage(message);
     }
 }
