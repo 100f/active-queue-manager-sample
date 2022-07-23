@@ -4,11 +4,13 @@ import com.dev.caio.study.queue.communicationmanagerlib.domain.ApplicationMessag
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.integration.amqp.dsl.Amqp;
 import org.springframework.integration.dsl.IntegrationFlow;
 import org.springframework.integration.dsl.IntegrationFlows;
 import org.springframework.integration.dsl.Transformers;
 
+@Configuration
 public class ConsumerInboundConfig {
 
     @Autowired
