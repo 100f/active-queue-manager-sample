@@ -1,50 +1,54 @@
 package dev.caio.study.queue.producer.config;
 
 import org.springframework.amqp.core.*;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
-import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
-import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
+    @Value("${spring.rabbitmq.connection-uri}")
+    private String uri;
+
     @Value("${spring.rabbitmq.queue-name}")
-    private String queue;
+    private String queueName;
 
     @Value("${spring.rabbitmq.message-name}")
     private String routingKey;
 
     @Value("${spring.rabbitmq.exchange-name}")
-    private String exchange;
-
+    private String exchangeName;
 
     @Bean
-    public Queue getQueue() {
-        return new Queue(queue, true);
+    Queue validadorQueue() {
+        return QueueBuilder.durable(queueName).build();
     }
 
     @Bean
-    public Exchange getExchange() {
-        return new DirectExchange(exchange);
+    Exchange validadorExchange() {
+        return ExchangeBuilder.directExchange(exchangeName).durable(true).build();
     }
 
     @Bean
-    public Binding bindQueueToExchange(Queue queue, Exchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with(routingKey).noargs();
+    Binding bindValidadorExchangeToQueue() {
+        return BindingBuilder.bind(validadorQueue()).to(validadorExchange()).with(routingKey).noargs();
+    }
+    @Bean
+    public ConnectionFactory connectionFactory() {
+        CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
+        connectionFactory.setUri(uri);
+        return connectionFactory;
     }
 
     @Bean
-    public MessageConverter getMessageConverter() {
-        return new Jackson2JsonMessageConverter();
-    }
-
-    @Bean
-    public AmqpTemplate getTemplate(ConnectionFactory connectionFactory) {
-        final RabbitTemplate template = new RabbitTemplate(connectionFactory);
-        template.setMessageConverter(getMessageConverter());
+    public RabbitTemplate producerTemplate() {
+        RabbitTemplate template = new RabbitTemplate(connectionFactory());
+        template.setExchange(exchangeName);
+        template.setRoutingKey(routingKey);
         return template;
     }
+
 }

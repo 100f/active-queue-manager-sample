@@ -1,8 +1,6 @@
-package dev.caio.study.queue.producer.service;
+package dev.caio.study.queue.producer.service.communication;
 
-import dev.caio.study.queue.consumer.dto.ApplicationMessage;
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import com.dev.caio.study.queue.communicationmanagerlib.domain.ApplicationMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,14 +8,11 @@ import org.springframework.stereotype.Service;
 public class CommunicationService {
 
     @Autowired
-    private RabbitTemplate template;
-
-    @Autowired
-    Binding binding;
+    private CommunicationGateway communicationGateway;
 
     public void sendMessage(ApplicationMessage message) {
         try {
-            template.convertAndSend(binding.getExchange(), binding.getRoutingKey(), message);
+            communicationGateway.notificar(message);
         }
         catch (Exception exception) {
             System.out.println("Erro ao enviar a mensagem: " + exception.getLocalizedMessage());
