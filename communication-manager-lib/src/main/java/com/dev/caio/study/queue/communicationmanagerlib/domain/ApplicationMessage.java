@@ -23,7 +23,6 @@ public class ApplicationMessage implements Message<Map<String, Serializable>> {
         return payload;
     }
 
-    public Boolean fodase() { return true; }
 
     @Override
     public MessageHeaders getHeaders() {
