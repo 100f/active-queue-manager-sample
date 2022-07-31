@@ -1,3 +1,5 @@
+server:
+  port: 8088
 spring:
   rabbitmq:
     connection-uri: amqp://admin:1234@localhost:5672
