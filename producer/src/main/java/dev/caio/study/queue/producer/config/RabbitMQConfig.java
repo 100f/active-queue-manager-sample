@@ -13,29 +13,12 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.connection-uri}")
     private String uri;
 
-    @Value("${spring.rabbitmq.queue-name}")
-    private String queueName;
-
     @Value("${spring.rabbitmq.message-name}")
     private String routingKey;
 
     @Value("${spring.rabbitmq.exchange-name}")
     private String exchangeName;
 
-    @Bean
-    Queue validadorQueue() {
-        return QueueBuilder.durable(queueName).build();
-    }
-
-    @Bean
-    Exchange validadorExchange() {
-        return ExchangeBuilder.directExchange(exchangeName).durable(true).build();
-    }
-
-    @Bean
-    Binding bindValidadorExchangeToQueue() {
-        return BindingBuilder.bind(validadorQueue()).to(validadorExchange()).with(routingKey).noargs();
-    }
     @Bean
     public ConnectionFactory connectionFactory() {
         CachingConnectionFactory connectionFactory = new CachingConnectionFactory();
