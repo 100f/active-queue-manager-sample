@@ -15,16 +15,8 @@ public class RabbitMQConfig {
     @Value("${spring.rabbitmq.queue-name}")
     private String queueName;
 
-    @Value("${spring.rabbitmq.message-name}")
-    private String routingKey;
-
     @Value("${spring.rabbitmq.connection-uri}")
     private String uri;
-
-    @Bean
-    public Queue listeningQueue() {
-        return new Queue(queueName, true);
-    }
 
     @Bean
     public ConnectionFactory connectionFactory() {
@@ -36,7 +28,7 @@ public class RabbitMQConfig {
     @Bean
     public SimpleMessageListenerContainer listenerContainer() {
         final SimpleMessageListenerContainer listenerContainer = new SimpleMessageListenerContainer();
-        listenerContainer.setQueues(listeningQueue());
+        listenerContainer.setQueueNames(queueName);
         listenerContainer.setConnectionFactory(connectionFactory());
         return listenerContainer;
     }

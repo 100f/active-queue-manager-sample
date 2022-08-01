@@ -2,5 +2,3 @@ spring:
   rabbitmq:
     connection-uri: amqp://admin:1234@localhost:5672
     queue-name: FilaValidador
-    message-name: NOVO_ARQUIVO_POSTADO
-    exchange-name: validador_exchange
